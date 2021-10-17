@@ -10,6 +10,10 @@ public extension Node {
     static func a(_ value: String) -> Node {
         Node(type: .standard, name: "a", contents: value)
     }
+    
+    static func a(_ children: [Node] = []) -> Node {
+        Node(type: .standard, name: "a", children: children)
+    }
 }
 
 /// The `<a>` tag defines a hyperlink, which is used to link from one page to another.
@@ -30,6 +34,14 @@ public struct A: Tag {
 
     public init(_ value: String) {
         self.init(.a(value))
+    }
+    
+    public init(_ children: [Node] = []) {
+        self.node = .a(children)
+    }
+
+    public init(@TagBuilder _ builder: () -> [Tag]) {
+        self.init(builder().map(\.node))
     }
 }
 
