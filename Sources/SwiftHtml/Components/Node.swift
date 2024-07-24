@@ -8,7 +8,7 @@
 public struct Node {
 
     /// internal node types
-    enum NodeType {
+    public enum NodeType {
         /// standard container tags
         case standard     // <div>  </div>
         /// comment tag
@@ -18,15 +18,16 @@ public struct Node {
         case empty        // <br>
         /// invisible node for grouping other nodes
 //        case group    // *invisible group*<h1>lorem</h1><p>ipsum</p>*invisible group*
+        case raw
     }
 
-    var type: NodeType
-    var name: String?
-    var contents: String?
-    var attributes: [Attribute]
-    var children: [Node]
+    public var type: NodeType
+    public var name: String?
+    public var contents: String?
+    public var attributes: [Attribute]
+    public var children: [Node]
 
-    init(type: NodeType = .standard,
+    public init(type: NodeType = .standard,
          name: String? = nil,
          contents: String? = nil,
          attributes: [Attribute] = [],
@@ -39,7 +40,7 @@ public struct Node {
         self.children = children
     }
 
-    var html: String {
+    public var html: String {
         switch type {
         case .standard:
             var htmlValue = children.map(\.html).joined(separator: "")
@@ -51,6 +52,8 @@ public struct Node {
             return "\n<!--" + (contents ?? "") + "-->"
         case .empty:
             return "\n<" + name! + (attributes.isEmpty ? "" : " ") + attributesList + ">"
+        case .raw:
+            return contents ?? ""
 //        case .group:
 //            var htmlValue = children.map(\.html).joined(separator: "")
 //            if !children.isEmpty {
